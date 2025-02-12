@@ -17,7 +17,7 @@ git clone https://github.com/dCodeX21/soneium-eth-weth-swap.git
 
 Go to the downloaded repository
 ```
-cd soneium-weth-swap
+cd soneium-eth-weth-swap
 ```
 
 Install dependencies by running:
