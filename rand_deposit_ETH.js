@@ -44,7 +44,18 @@ async function depositETH() {
     const totalGasSpent = parseFloat(web3.utils.fromWei((transactionReceipt.gasUsed * transactionReceipt.effectiveGasPrice).toString(), 'ether'))
 
     const blockNumber = transactionReceipt.blockNumber
-    const blockDetails = await web3.eth.getBlock(blockNumber)
+    let blockDetails =
+      (await web3.eth.getBlock(blockNumber)) ||
+      (await web3.eth.getBlock(transactionReceipt.blockHash));
+
+    for (let i = 0, delay = 250; !blockDetails || blockDetails.timestamp == null; i++) {
+      if (i % 10 === 0) console.log(`\nWaiting for block \x1b[32m${blockNumber}\x1b[0m`);
+      await new Promise(r => setTimeout(r, delay));
+      delay = Math.min((delay * 1.5) | 0, 5000);
+      blockDetails =
+        (await web3.eth.getBlock(blockNumber)) ||
+        (await web3.eth.getBlock(transactionReceipt.blockHash));
+    }
     const formattedDate = formatDateToTimezone(new Date(Number(blockDetails.timestamp) * 1000), 'Asia/Manila')
 
     const wethBalanceUpdated = await wethContract.methods.balanceOf(account.address).call()

@@ -116,12 +116,13 @@ function executeTransactions(sequence, index = 0) {
   let scriptName, scriptHeader;
   if (type === 'D') {
     scriptName = 'rand_deposit_ETH.js';
-    scriptHeader = `\nTransaction ${index + 1}/${sequence.length}: Executing Deposit Transaction`;
+    scriptHeader = `Transaction \x1b[97m${index + 1}\x1b[0m/${sequence.length}: Executing Deposit Transaction`;
   } else {
     scriptName = 'rand_withdraw_ETH.js';
-    scriptHeader = `\nTransaction ${index + 1}/${sequence.length}: Executing Withdrawal Transaction`;
+    scriptHeader = `Transaction \x1b[97m${index + 1}\x1b[0m/${sequence.length}: Executing Withdrawal Transaction`;
   }
 
+  console.log('\n-------------------------------------------------------------------------------------------------------------------');
   console.log(scriptHeader);
 
   const child = fork(`./${scriptName}`);
@@ -205,11 +206,13 @@ function formatDelay(delay) {
 /* ------------------------------ Main Process ------------------------------ */
 rl.question(
   'Choose the action you want to perform:\n' +
+    'Choose the action you want to perform:\n' +
     '1. Wrap (Deposit) Ethereum\n' +
     '2. Unwrap (Withdraw) Ethereum\n' +
     '3. Do Both (Sequential with Delay)\n' +
     '4. Interleaving Transactions (Randomized Order)\n' +
-    'Enter your choice (1, 2, 3, or 4): ',
+    '5. Exit\n' +
+    'Enter your choice (1, 2, 3, 4, or 5): ',
   (choice) => {
     if (choice === '1' || choice === '2' || choice === '3' || choice === '4') {
       if (choice === '1') {
@@ -299,6 +302,9 @@ rl.question(
           }
         });
       }
+    } else if (choice === '5') {
+      console.log('Looser!');
+      rl.close();
     } else {
       console.log('Invalid choice.');
       rl.close();
