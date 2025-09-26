@@ -2,9 +2,9 @@
 
 ## Requirements
 
-- Node.js >= v18.x
+- [Node.js](https://nodejs.org/en/download) >= v18.x
 - npm >= v9 (usually bundled with Nodejs)
-- git bash (for command terminal)
+- [git bash](https://git-scm.com/downloads) (for command terminal)
 <br/>
 
 ## Getting Started
